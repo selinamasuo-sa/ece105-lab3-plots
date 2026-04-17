@@ -14,6 +14,7 @@ Usage
 # Use NumPy-style docstring with Parameters and Returns sections.
 
 import numpy as np
+import matplotlib.pyplot as plt
 
 def generate_data(seed: int = 1234, n: int = 200):
     """ Generate synthetic sensor data for two temperature sensors.
@@ -80,9 +81,6 @@ def plot_scatter(ax, timestamps, sensor_a, sensor_b, label_a='Sensor A', label_b
     None
         The function modifies the provided Axes in place and returns None.
     """
-    # Local import for plotting utilities
-    import matplotlib.pyplot as plt
-
     # Scatter points
     ax.scatter(timestamps, sensor_a, c='C0', marker='o', s=36, alpha=0.75, label=label_a)
     ax.scatter(timestamps, sensor_b, c='C1', marker='s', s=36, alpha=0.75, label=label_b)
@@ -172,7 +170,7 @@ def plot_boxplot(ax, sensor_a, sensor_b, labels=('Sensor A','Sensor B'), showmea
         The function modifies the provided Axes in place and returns None.
     """
     # Use patch_artist=True to allow coloring if desired
-    ax.boxplot([sensor_a, sensor_b], labels=labels, showmeans=showmeans, patch_artist=True)
+    ax.boxplot([sensor_a, sensor_b], tick_labels=labels, showmeans=showmeans, patch_artist=True)
 
     ax.set_ylabel('Temperature (°C)')
     ax.set_title(title)
@@ -196,14 +194,12 @@ def main():
     None
         Saves ``sensor_analysis.png`` at 150 DPI with a tight bounding box.
     """
-    import matplotlib.pyplot as plt
-
     sensor_a, sensor_b, timestamps = generate_data(seed=1234)
 
-    fig, axes = plt.subplots(1, 3, figsize=(18, 5))
-    plot_scatter(axes[0], timestamps, sensor_a, sensor_b)
-    plot_histogram(axes[1], sensor_a, sensor_b)
-    plot_boxplot(axes[2], sensor_a, sensor_b)
+    fig, axes = plt.subplots(2, 2, figsize=(18, 5))
+    plot_scatter(axes[0, 0], timestamps, sensor_a, sensor_b)
+    plot_histogram(axes[0, 1], sensor_a, sensor_b)
+    plot_boxplot(axes[1, 0], sensor_a, sensor_b)
 
     fig.tight_layout()
     fig.savefig('sensor_analysis.png', dpi=150, bbox_inches='tight')
