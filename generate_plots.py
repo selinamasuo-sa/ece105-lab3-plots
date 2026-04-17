@@ -179,3 +179,38 @@ def plot_boxplot(ax, sensor_a, sensor_b, labels=('Sensor A','Sensor B'), showmea
     ax.grid(axis='y', linestyle='--', alpha=0.5)
 
     return None
+
+# Create main() that generates data, creates a 1x3 subplot figure,
+# calls each plot function, adjusts layout, and saves as sensor_analysis.png
+# at 150 DPI with tight bounding box.
+
+def main():
+    """Generate data, render all plots in one figure, and save to disk.
+
+    Parameters
+    ----------
+    None
+
+    Returns
+    -------
+    None
+        Saves ``sensor_analysis.png`` at 150 DPI with a tight bounding box.
+    """
+    import matplotlib.pyplot as plt
+
+    sensor_a, sensor_b, timestamps = generate_data(seed=1234)
+
+    fig, axes = plt.subplots(1, 3, figsize=(18, 5))
+    plot_scatter(axes[0], timestamps, sensor_a, sensor_b)
+    plot_histogram(axes[1], sensor_a, sensor_b)
+    plot_boxplot(axes[2], sensor_a, sensor_b)
+
+    fig.tight_layout()
+    fig.savefig('sensor_analysis.png', dpi=150, bbox_inches='tight')
+    plt.close(fig)
+
+    return None
+
+
+if __name__ == '__main__':
+    main()
