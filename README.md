@@ -59,8 +59,5 @@ Running the script produces:
 - `sensor_analysis.png` — a 1x3 figure (scatter, histogram, box plot), saved at 150 DPI with a tight bounding box.
 
 ## AI tools used and disclosure
-
-_Placeholder: Add your disclosure text here describing any AI tools used, what they were used for, and how you reviewed/validated the generated work._
-
 I used GitHub Copilot as well as the code completion tools in VS Code for this assignment. I verified the work by parsing through the generated code to look for inconsistencies in importing modules; naming functions, variables, parameters, etc; and ran the program frequently to simulate problems.
 Additionally, I asked prompted the AI to include some print statements such that I could verify the values of specific variables at various points in the program's runtime.
