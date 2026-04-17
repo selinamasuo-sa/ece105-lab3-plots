@@ -100,3 +100,82 @@ def plot_scatter(ax, timestamps, sensor_a, sensor_b, label_a='Sensor A', label_b
 
     return None
 
+
+def plot_histogram(ax, sensor_a, sensor_b, bins='auto', label_a='Sensor A', label_b='Sensor B', title='Histogram of Sensor A and Sensor B readings'):
+    """
+    Draw overlapping histograms for two sensors onto an existing Axes.
+
+    Parameters
+    ----------
+    ax : matplotlib.axes.Axes
+        The Axes object to draw into. Modified in place.
+    sensor_a : numpy.ndarray
+        1-D array of shape (n,) with Sensor A temperature readings (°C).
+    sensor_b : numpy.ndarray
+        1-D array of shape (n,) with Sensor B temperature readings (°C).
+    bins : int or sequence or str, optional
+        Binning specification passed to numpy.histogram_bin_edges / Axes.hist
+        (default 'auto'). A common binning is computed from the combined data
+        to facilitate comparison.
+    label_a : str, optional
+        Legend label for sensor A.
+    label_b : str, optional
+        Legend label for sensor B.
+    title : str, optional
+        Title to set on the axes.
+
+    Returns
+    -------
+    None
+        The function modifies the provided Axes in place and returns None.
+    """
+    import numpy as np
+
+    # Compute common bins from combined data for fair comparison
+    all_data = np.concatenate([sensor_a, sensor_b])
+    bin_edges = np.histogram_bin_edges(all_data, bins=bins)
+
+    ax.hist(sensor_a, bins=bin_edges, alpha=0.6, color='C0', label=label_a, edgecolor='black')
+    ax.hist(sensor_b, bins=bin_edges, alpha=0.6, color='C1', label=label_b, edgecolor='black')
+
+    ax.set_xlabel('Temperature (°C)')
+    ax.set_ylabel('Count')
+    ax.set_title(title)
+    ax.legend()
+    ax.grid(axis='y', linestyle='--', alpha=0.5)
+
+    return None
+
+
+def plot_boxplot(ax, sensor_a, sensor_b, labels=('Sensor A','Sensor B'), showmeans=True, title='Box plot of Sensor A and Sensor B readings'):
+    """
+    Draw a box plot comparing two sensors onto an existing Axes.
+
+    Parameters
+    ----------
+    ax : matplotlib.axes.Axes
+        The Axes object to draw into. Modified in place.
+    sensor_a : numpy.ndarray
+        1-D array of shape (n,) with Sensor A temperature readings (°C).
+    sensor_b : numpy.ndarray
+        1-D array of shape (n,) with Sensor B temperature readings (°C).
+    labels : sequence of str, optional
+        Labels for the two boxplot categories (default ('Sensor A','Sensor B')).
+    showmeans : bool, optional
+        If True, show the mean marker on each box (default True).
+    title : str, optional
+        Title to set on the axes.
+
+    Returns
+    -------
+    None
+        The function modifies the provided Axes in place and returns None.
+    """
+    # Use patch_artist=True to allow coloring if desired
+    ax.boxplot([sensor_a, sensor_b], labels=labels, showmeans=showmeans, patch_artist=True)
+
+    ax.set_ylabel('Temperature (°C)')
+    ax.set_title(title)
+    ax.grid(axis='y', linestyle='--', alpha=0.5)
+
+    return None
